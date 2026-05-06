@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
-        <record id="mail_template_email_verification" model="mail.template">
-            <field name="name">Website Email Verification</field>
-            <field name="model_id" ref="base.model_res_users"/>
-            <field name="subject">Email verification code</field>
-            <field name="email_from">{{ object.company_id.email or user.email_formatted or '' }}</field>
-            <field name="email_to">{{ object.email }}</field>
-            <field name="auto_delete" eval="True"/>
-            <field name="body_html" type="html"><![CDATA[
-<div style="font-family: Arial, sans-serif; color: #222; line-height: 1.6;">
-    <p>Hello {{ object.name or object.login }},</p>
-    <p>Use the 6-digit code below to verify your email address:</p>
-    <p style="font-size: 28px; font-weight: 700; letter-spacing: 6px; margin: 24px 0;">{{ object.email_verification_code }}</p>
-    <p>This code is valid for 30 minutes.</p>
-    <p>If you did not create this account, you can ignore this email.</p>
-</div>
-            ]]></field>
-        </record>
-    </data>
 
     <template id="verify_email_page" name="Verify Email Page">
         <t t-call="website.layout">

@@ -11,6 +11,7 @@
         'mail',
     ],
     'data': [
+        'data/mail_template.xml',
         'views/email_verification_templates.xml',
     ],
     'installable': True,
