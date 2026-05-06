@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="verify_email_page" name="Verify Email Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-md-7">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4 p-md-5">
+                                    <h1 class="h3 mb-3 text-center">Email Verification</h1>
+                                    <p class="text-muted text-center mb-4">
+                                        Enter the 6-digit code sent to the email address used during signup.
+                                    </p>
+
+                                    <t t-if="error">
+                                        <div class="alert alert-danger" role="alert">
+                                            <t t-out="error"/>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="message and not verified">
+                                        <div class="alert alert-info" role="alert">
+                                            <t t-out="message"/>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="verified">
+                                        <div class="alert alert-success" role="alert">
+                                            <t t-out="message"/>
+                                        </div>
+                                        <div class="d-grid">
+                                            <a t-att-href="login_url" class="btn btn-primary">
+                                                Go to Login
+                                            </a>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="not verified">
+                                        <form action="/mail/verify" method="post" class="d-grid gap-3">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div>
+                                                <label class="form-label" for="login">Email</label>
+                                                <input id="login" type="email" name="login" class="form-control" t-att-value="login" required="required"/>
+                                            </div>
+                                            <div>
+                                                <label class="form-label" for="code">Verification Code</label>
+                                                <input id="code" type="text" name="code" class="form-control text-center" maxlength="6" inputmode="numeric" placeholder="000000" t-att-value="code" required="required"/>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Verify</button>
+                                        </form>
+
+                                        <form action="/mail/verify/resend" method="post" class="mt-3">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="login" t-att-value="login"/>
+                                            <button type="submit" class="btn btn-outline-secondary w-100">Resend Code</button>
+                                        </form>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="login_email_verification_link" inherit_id="web.login" name="Login Email Verification Link">
+        <xpath expr="//div[contains(@class, 'oe_login_buttons')]" position="after">
+            <t t-if="email_verification_url">
+                <div class="mt-3 text-center">
+                    <a t-att-href="email_verification_url">Open email verification page</a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
